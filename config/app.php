@@ -235,5 +235,37 @@ return [
         'first_name',
         'last_name',
         'email'
+    ],
+
+    'db_fields_familie' => [
+        'id',
+        'nachname',
+        'vorname',
+        'geburtsdatum',
+        'geburtsjahr',
+        'geburtsort',
+        'heiratsdatum',
+        'heiratsort',
+        'sterbedatum',
+        'sterbejahr',
+        'sterbeort',
+        'taufdatum',
+        'taufort'
+    ],
+
+    'db_fields_lebenslauf' => [
+        'person',
+        'tag',
+        'monat',
+        'jahr',
+        'beschreibung',
+        'dokument'
+    ],
+
+    'db_fields_verweise' => [
+        'person_id',
+        'zu_person_id',
+        'katagorie',
+        'beschreibung'
     ]
 ];

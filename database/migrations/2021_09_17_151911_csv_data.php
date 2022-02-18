@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('csv_filename');
             $table->boolean('csv_header')->default(0);
+            $table->string('csv_model_name');
             $table->json('csv_data');
             $table->timestamps();
         });

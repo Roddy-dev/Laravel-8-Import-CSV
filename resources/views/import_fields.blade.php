@@ -1,5 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
+        @dump($model)
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Select fields') }}
         </h2>
@@ -7,7 +8,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-scroll shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
                     <x-validation-errors class="mb-4" :errors="$errors"/>
@@ -46,9 +47,16 @@
                                 @foreach ($csv_data[0] as $key => $value)
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                         <select name="fields[{{ $key }}]">
-                                            @foreach (config('app.db_fields') as $db_field)
-                                                <option value="{{ (\Request::has('header')) ? $db_field : $loop->index }}"
-                                                        @if ($key === $db_field) selected @endif>{{ $db_field }}</option>
+                                            @foreach (config('app.db_fields_'.$model) as $db_field)
+                                                {{-- @dump($db_field) --}}
+                                                {{-- <option value="{{ (\Request::has('header')) ? $db_field : $loop->index }}" --}}
+                                                <option value="{{ (isset($headings)) ? $db_field : $loop->index }}"
+                                                    {{-- @dump($db_field) --}}
+                                                        @if (isset($headings))
+                                                            @if ($key === $db_field) selected @endif>{{ $db_field }}</option>
+                                                        @else
+                                                            @if ($key === $loop->index) selected @endif>{{ $db_field }}</option>
+                                                        @endif
                                             @endforeach
                                         </select>
                                     </td>
