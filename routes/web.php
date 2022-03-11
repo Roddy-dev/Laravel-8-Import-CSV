@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\ContactController::class, 'index'])->name('contacts.index');
 Route::get('/familie', [\App\Http\Controllers\FamilieController::class, 'index'])->name('families.index');
+Route::get('/lebenslauf', [\App\Http\Controllers\LebenslaufController::class, 'index'])->name('lebenslaufs.index');
+Route::get('/verweise', [\App\Http\Controllers\VerweiseController::class, 'index'])->name('verweises.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');

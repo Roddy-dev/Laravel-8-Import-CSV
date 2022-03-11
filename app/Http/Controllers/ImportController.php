@@ -2,32 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CsvData;
 use App\Models\Contact;
+use App\Models\CsvData;
+use App\Models\Familie;
+use App\Models\Verweise;
+use App\Models\Lebenslauf;
 use Illuminate\Http\Request;
 use App\Imports\ContactsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\CsvImportRequest;
-use App\Models\Familie;
+// use Illuminate\Support\Arr;
 use Maatwebsite\Excel\HeadingRowImport;
 
 class ImportController extends Controller
 {
-    
-    // minor brain wave, put model on csv file so that the model can be selected properly
     public function parseImport(CsvImportRequest $request)
     {
-        // $validated = $request->validate([
-        //     'modelname' => 'required',
-        // ]);
-        
+        if (!$this->validateModelName($request->modelname)) {
+            return redirect()->back()->withErrors(['msg' => 'Invalid model']);
+        }
+        ini_set('auto_detect_line_endings', true);
+        $data = array_map('str_getcsv', file($request->file('csv_file')->getRealPath()));
         if ($request->has('header')) {
-            // $headings = (new HeadingRowImport)->toArray($request->file('csv_file'));
-            // $data = Excel::toArray(new ContactsImport, $request->file('csv_file'))[0];
-            $data = array_map('str_getcsv', file($request->file('csv_file')->getRealPath()));
-            array_shift($data); // remove header as we dont want it.
-        } else {
-            $data = array_map('str_getcsv', file($request->file('csv_file')->getRealPath()));
+            array_shift($data); // remove header as we dont want it or funny format of excel
         }
         
         if (count($data) > 0) {
@@ -58,35 +55,38 @@ class ImportController extends Controller
         $model = $data->csv_model_name;
 
         foreach ($csv_data as $row) {
-            // dump($row);
-            if ($model = 'familie') {
+            if ($model == 'familie') {
                 $familie = new Familie();
                 foreach (config('app.db_fields_familie') as $index => $field) {
-                    // if ($data->csv_header) {
-                    //     $familie->$field = $row[$request->fields[$field]];
-                    // } else {
                     $familie->$field = $row[$request->fields[$index]];
-                    // }
                 }
                 $familie->save();
-            }
-            // $contact = new Contact();
-            // foreach (config('app.db_fields_'.$model) as $index => $field) {
-            //     if ($data->csv_header) {
-            //         $contact->$field = $row[$request->fields[$field]];
-            //     } else {
-            //         $contact->$field = $row[$request->fields[$index]];
-            //     }
-            // }
-            // $contact->save();
+            };
+            if ($model == 'lebenslauf') {
+                $lebenslauf = new Lebenslauf();
+                foreach (config('app.db_fields_lebenslauf') as $index => $field) {
+                    $lebenslauf->$field = $row[$request->fields[$index]];
+                }
+                $lebenslauf->save();
+            };
+            if ($model == 'verweise') {
+                $verweise = new Verweise();
+                foreach (config('app.db_fields_verweise') as $index => $field) {
+                    $verweise->$field = $row[$request->fields[$index]];
+                }
+                $verweise->save();
+            };
         }
         
         return redirect()->route($model.'s.index')->with('success', 'Import finished.');
     }
+
+    public function configureForParse()
+    {
+    }
     
-    // protected function validateModelName($name){
-    //     $acceptedNames = ['familie', 'lebenslauf', 'werweise'];
-    //     if($name->not)
-        
-    // }
+    protected function validateModelName($name)
+    {
+        return in_array($name, config('app.db_accepted_models'));
+    }
 }

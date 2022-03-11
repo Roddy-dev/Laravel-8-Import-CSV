@@ -29,10 +29,18 @@
                             <x-input id="header" class="ml-1" type="checkbox" name="header" checked/>
                         </div>
                         
-                        
-                        <x-button class="mt-4">
-                            {{ __('Submit') }}
-                        </x-button>
+                        {{-- <div x-data="{ disableSubmit: false, text: 'Submit'}">
+                            <x-button  @click="
+                                text = 'Loading Table';
+                                disableSubmit = true;
+                            "
+                                {{-- :class="[disableSubmit ? '' : 'cursor-not-allowed']"  --}}
+                                {{-- class="mt-4"
+                                x-text="text"
+                                x-bind:disabled="disableSubmit"> --}}
+                            {{-- </x-button>
+                        </div> --}}
+                        <x-submit-one-click></x-submit-one-click>
                         <input type="hidden" value="familie" name="modelname" for="modelname">
                     </form>
 

@@ -254,7 +254,7 @@ return [
     ],
 
     'db_fields_lebenslauf' => [
-        'person',
+        'person_id',
         'tag',
         'monat',
         'jahr',
@@ -267,5 +267,11 @@ return [
         'zu_person_id',
         'katagorie',
         'beschreibung'
+    ],
+
+    'db_accepted_models' => [
+        'familie',
+        'lebenslauf',
+        'verweise',
     ]
 ];

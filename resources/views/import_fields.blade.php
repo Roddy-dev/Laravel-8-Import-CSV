@@ -65,9 +65,10 @@
                             </tbody>
                         </table>
 
-                        <x-button class="mt-4">
+                        {{-- <x-button class="mt-4">
                             {{ __('Submit') }}
-                        </x-button>
+                        </x-button> --}}
+                        <x-submit-one-click></x-submit-one-click>
                     </form>
 
                 </div>
