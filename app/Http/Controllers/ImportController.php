@@ -98,7 +98,7 @@ class ImportController extends Controller
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         $truncated =  DB::table($tableName.'s')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        sleep(30); //to test on table plus
+        //sleep(30); //to test on table plus
         return $truncated;
     }
     
