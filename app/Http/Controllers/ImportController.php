@@ -9,9 +9,10 @@ use App\Models\Verweise;
 use App\Models\Lebenslauf;
 use Illuminate\Http\Request;
 use App\Imports\ContactsImport;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Requests\CsvImportRequest;
 // use Illuminate\Support\Arr;
+use App\Http\Requests\CsvImportRequest;
 use Maatwebsite\Excel\HeadingRowImport;
 
 class ImportController extends Controller
@@ -53,7 +54,10 @@ class ImportController extends Controller
         $data = CsvData::find($request->csv_data_file_id);
         $csv_data = json_decode($data->csv_data, true);
         $model = $data->csv_model_name;
-
+        if (!$this->validateModelName($model)) {
+            return redirect()->back()->withErrors(['msg' => 'Invalid model']);
+        }
+        $this->dropTable($model);
         foreach ($csv_data as $row) {
             if ($model == 'familie') {
                 $familie = new Familie();
@@ -83,6 +87,19 @@ class ImportController extends Controller
 
     public function configureForParse()
     {
+        // if we have valid model name and
+    }
+
+    public function dropTable($tableName)
+    {
+        //this should probably be done to prevent duplicate entries and for this db to mirror
+        // original db. Bit hacky, better would be upserts via laravel excel.
+        // dd($tableName.'s');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        $truncated =  DB::table($tableName.'s')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        sleep(30); //to test on table plus
+        return $truncated;
     }
     
     protected function validateModelName($name)

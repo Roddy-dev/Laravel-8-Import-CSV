@@ -17,11 +17,12 @@ class CreateLebenslaufsTable extends Migration
             $table->id();
             $table->foreignId('person_id')->references('id')->on('families');
             // $table->foreignId('familie_id')->on('families');
-            $table->string('tag');
-            $table->string('monat');
-            $table->string('jahr');
-            $table->string('beschreibung');
-            $table->string('dokument');
+            $table->string('tag')->nullable();
+            $table->string('monat')->nullable();
+            $table->string('jahr')->nullable();
+            // $table->string('lebenslaufdate')->nullable();
+            $table->string('beschreibung')->nullable();
+            $table->string('dokument')->nullable();
             $table->timestamps();
         });
     }

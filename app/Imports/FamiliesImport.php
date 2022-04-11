@@ -4,8 +4,11 @@ namespace App\Imports;
 
 use App\Models\Familie;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithUpserts;
 
-class FamiliesImport implements ToModel
+class FamiliesImport implements
+    ToModel
+// , WithUpserts
 {
     /**
     * @param array $row
@@ -17,5 +20,10 @@ class FamiliesImport implements ToModel
         return new Familie([
             //
         ]);
+    }
+
+    public function uniqueBy()
+    {
+        return 'id';
     }
 }
