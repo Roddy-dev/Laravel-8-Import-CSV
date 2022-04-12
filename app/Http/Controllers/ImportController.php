@@ -30,7 +30,7 @@ class ImportController extends Controller
         
         if (count($data) > 0) {
             $csv_data = array_slice($data, 0, 2);
-            
+            // an if statement here to remove living persons?
             $csv_data_file = CsvData::create([
                 'csv_filename' => $request->file('csv_file')->getClientOriginalName(),
                 'csv_header' => $request->has('header'),

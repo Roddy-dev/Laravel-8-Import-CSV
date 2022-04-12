@@ -14,7 +14,41 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\ContactController::class, 'index'])->name('contacts.index');
-Route::get('/familie', [\App\Http\Controllers\FamilieController::class, 'index'])->name('families.index');
+
+//************************
+Route::group(['middleware' => 'auth'], function () {
+    //  import-csv-jan.test/admin/tasks
+    Route::group([
+        'prefix' => 'admin',
+        'middleware' => 'is_admin',
+        //this is name routes as admin.tasks.index
+        'as' => 'admin',
+    ], function () {
+        Route::get(
+            'familie',
+            [\App\Http\Controllers\Admin\FamilieController::class, 'index']
+        )
+            ->name('familie.index');
+    });
+
+    Route::group([
+            //  roles-permissions-core.test/user/tasks
+            //seperate controllers but same named route and access determined by middleware
+        'prefix' => 'user',
+        'as' => 'user.',
+    ], function () {
+        Route::get(
+            'tasks',
+            [\App\Http\Controllers\User\TaskController::class, 'index']
+        )
+            ->name('tasks.index');
+    });
+
+    Route::resource('tasks', \App\Http\Controllers\TaskController::class);
+});
+//************************
+
+// Route::get('/familie', [\App\Http    \Controllers\FamilieController::class, 'index'])->name('families.index');
 Route::get('/lebenslauf', [\App\Http\Controllers\LebenslaufController::class, 'index'])->name('lebenslaufs.index');
 Route::get('/verweise', [\App\Http\Controllers\VerweiseController::class, 'index'])->name('verweises.index');
 
