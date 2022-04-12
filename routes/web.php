@@ -25,10 +25,22 @@ Route::group(['middleware' => 'auth'], function () {
         'as' => 'admin',
     ], function () {
         Route::get(
-            'familie',
+            '/familie',
             [\App\Http\Controllers\Admin\FamilieController::class, 'index']
         )
             ->name('familie.index');
+
+        Route::get(
+            '/lebenslauf',
+            [\App\Http\Controllers\Admin\LebenslaufController::class, 'index']
+        )
+            ->name('lebenslaufs.index');
+
+        Route::get(
+            '/verweise',
+            [\App\Http\Controllers\Admin\VerweiseController::class, 'index']
+        )
+            ->name('verweises.index');
     });
 
     Route::group([
@@ -49,8 +61,8 @@ Route::group(['middleware' => 'auth'], function () {
 //************************
 
 // Route::get('/familie', [\App\Http    \Controllers\FamilieController::class, 'index'])->name('families.index');
-Route::get('/lebenslauf', [\App\Http\Controllers\LebenslaufController::class, 'index'])->name('lebenslaufs.index');
-Route::get('/verweise', [\App\Http\Controllers\VerweiseController::class, 'index'])->name('verweises.index');
+// Route::get('/lebenslauf', [\App\Http\Controllers\LebenslaufController::class, 'index'])->name('lebenslaufs.index');
+// Route::get('/verweise', [\App\Http\Controllers\VerweiseController::class, 'index'])->name('verweises.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');

@@ -44,4 +44,18 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    /**
+    * Indicate that the model's user is an admin user.
+    *
+    * @return \Illuminate\Database\Eloquent\Factories\Factory
+    */
+    public function isAdmin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_admin' => true,
+            ];
+        });
+    }
 }
